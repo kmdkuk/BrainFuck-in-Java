@@ -17,6 +17,8 @@ public class Brainfuck
 	{
 		String result = "";
 		init();
+		int loopStart=0;
+		int loopEnd=-1;
 		while(sourceCode.length() > codePointer)
 		{
 			char command = sourceCode.charAt(codePointer);
@@ -41,8 +43,25 @@ public class Brainfuck
 
 				break;
 			case '[':
+				loopStart = codePointer;
+				if(memory[ptr]==0)
+				{
+					if(loopEnd != -1)
+					{
+						codePointer = loopEnd+1;
+						loopEnd = -1;
+					}else
+					{
+						codePointer = sourceCode.indexOf("]", codePointer)+1;
+					}
+				}
 				break;
 			case ']':
+				loopEnd = codePointer;
+				if(memory[ptr] != 0)
+				{
+					codePointer = loopStart+1;
+				}
 				break;
 			default:
 				break;
