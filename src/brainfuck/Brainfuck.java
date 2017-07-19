@@ -8,9 +8,17 @@ public class Brainfuck
 	private int ptr;
 	private int memory[] = new int[memoryNumber];
 
+	Brainfuck(){}
+
 	Brainfuck(String sourceCode)
 	{
 		this.sourceCode = sourceCode;
+	}
+
+	public String run(String sourceCode)
+	{
+		this.sourceCode = sourceCode;
+		return this.run();
 	}
 
 	public String run()
