@@ -4,9 +4,16 @@ public class Brainfuck
 {
 	String sourceCode = "";
 	private int codePointer;
-	private final int memoryNumber = 20;
+	private final int memoryNumber = 100;
 	private int ptr;
 	private int memory[] = new int[memoryNumber];
+
+	public static void main(String[] args) {
+		String helloworld = "+++++++++[>++++++++>+++++++++++>+++++<<<-]>.>++.+++++++..+++.>-.------------.<++++++++.--------.+++.------.--------.>+.";
+		String fizzBuzz = "++++++[->++++>>+>+>-<<<<<]>[<++++>>+++>++++>>+++>+++++>+++++>>>>>>++>>++<<<<<<<<<<<<<<-]<++++>+++>-->+++>->>--->++>>>+++++[->++>++<<]<<<<<<<<<<[->-[>>>>>>>]>[<+++>.>.>>>>..>>>+<]<<<<<-[>>>>]>[<+++++>.>.>..>>>+<]>>>>+<-[<<<]<[[-<<+>>]>>>+>+<<<<<<[->>+>+>-<<<<]<]>>[[-]<]>[>>>[>.<<.<<<]<[.<<<<]>]>.<<<<<<<<<<<]";
+		Brainfuck bf = new Brainfuck(helloworld);
+		System.out.println(bf.run());
+    }
 
 	Brainfuck(){}
 
@@ -34,9 +41,13 @@ public class Brainfuck
 			{
 			case '>':
 				ptr++;
+				//System.out.println("codePointer:"+codePointer);
+				//System.out.println("ptr:"+ptr);
 				break;
 			case '<':
 				ptr--;
+				//System.out.println("codePointer:"+codePointer);
+				//System.out.println("ptr:"+ptr);
 				break;
 			case '+':
 				memory[ptr]++;
@@ -56,11 +67,11 @@ public class Brainfuck
 				{
 					if(loopEnd != -1)
 					{
-						codePointer = loopEnd+1;
+						codePointer = loopEnd;
 						loopEnd = -1;
 					}else
 					{
-						codePointer = sourceCode.indexOf("]", codePointer)+1;
+						codePointer = sourceCode.indexOf("]", codePointer);
 					}
 				}
 				break;
@@ -68,15 +79,25 @@ public class Brainfuck
 				loopEnd = codePointer;
 				if(memory[ptr] != 0)
 				{
-					codePointer = loopStart+1;
+					codePointer = loopStart;
 				}
 				break;
 			default:
 				break;
 			}
+			//showMemory();
 			codePointer++;
 		}
 		return result;
+	}
+
+	private void showMemory()
+	{
+		for(int i=0;i<memoryNumber;i++)
+		{
+			System.out.print(memory[i]+"\t");
+		}
+		System.out.println();
 	}
 
 	private void init()
@@ -85,4 +106,6 @@ public class Brainfuck
 		ptr = 0;
 		for(int i=0;i<memoryNumber;i++)memory[i] = 0;
 	}
+
+
 }

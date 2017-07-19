@@ -10,7 +10,7 @@ public class BrainfuckTest {
 	public void testrun() {
 		String helloworld = "+++++++++[>++++++++>+++++++++++>+++++<<<-]>.>++.+++++++..+++.>-.------------.<++++++++.--------.+++.------.--------.>+.";
 		Brainfuck bf = new Brainfuck();
-		assertEquals("helloworldじゃない","Hello, World!",bf.run(helloworld));
+		assertEquals("helloworldじゃない","Hello, world!",bf.run(helloworld));
 	}
 
 }
