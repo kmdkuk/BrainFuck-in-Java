@@ -14,7 +14,7 @@ public class BrainfuckTest {
 		Brainfuck bf = new Brainfuck();
 		assertEquals("helloworldじゃない","Hello, world!",bf.run(helloworld));
 
-		assertEquals("nestLoopに対応できてない","Hello World",bf.run(nestLoopHelloworld));
+		assertEquals("nestLoopに対応できてない","Hello World!\n",bf.run(nestLoopHelloworld));
 	}
 
 }
