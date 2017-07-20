@@ -4,16 +4,26 @@ public class Brainfuck
 {
 	String sourceCode = "";
 	private int codePointer;
-	private final int memoryNumber = 100;
+	private final int memoryNumber = 999;
 	private int ptr;
 	private int memory[] = new int[memoryNumber];
 
 	public static void main(String[] args) {
-		String helloworld = "+++++++++[>++++++++>+++++++++++>+++++<<<-]>.>++.+++++++..+++.>-.------------.<++++++++.--------.+++.------.--------.>+.";
-		String fizzBuzz = "++++++[->++++>>+>+>-<<<<<]>[<++++>>+++>++++>>+++>+++++>+++++>>>>>>++>>++<<<<<<<<<<<<<<-]<++++>+++>-->+++>->>--->++>>>+++++[->++>++<<]<<<<<<<<<<[->-[>>>>>>>]>[<+++>.>.>>>>..>>>+<]<<<<<-[>>>>]>[<+++++>.>.>..>>>+<]>>>>+<-[<<<]<[[-<<+>>]>>>+>+<<<<<<[->>+>+>-<<<<]<]>>[[-]<]>[>>>[>.<<.<<<]<[.<<<<]>]>.<<<<<<<<<<<]";
-		Brainfuck bf = new Brainfuck(helloworld);
+		String helloworld = "+++++++++[>++++++++>+++++++++++>+++++<<<-]>."
+				+ ">++.+++++++..+++.>-.------------.<++++++++.--------.+++."
+				+ "------.--------.>+.";
+		String nestLoopHelloworld = ">++++++++[-<+++++++++>]<.>[][<-]>+>-[+]++>++>+++[>[->+++<<+++>]<<]>-----."
+				+ ">->+++..+++.>-.<<+[>[+>+]>>]<--------------.>>.+++.------.--------.>+.>+.";
+		String fizzBuzz = "++++++[->++++>>+>+>-<<<<<]>"
+				+ "[<++++>>+++>++++>>+++>+++++>+++++>>>>>>"
+				+ "++>>++<<<<<<<<<<<<<<-]<++++>+++>-->+++>->>"
+				+ "--->++>>>+++++[->++>++<<]<<<<<<<<<<"
+				+ "[->-[>>>>>>>]>[<+++>.>.>>>>..>>>+<]<<<<<-[>>>>]>[<+++++>.>.>..>>>+<]>>>>+<-[<<<]"
+				+ "<[[-<<+>>]>>>+>+<<<<<<[->>+>+>-<<<<]<]>>[[-]<]>[>>>[>.<<.<<<]<[.<<<<]>]>.<<<<<<<<<<<]";
+		Brainfuck bf = new Brainfuck(nestLoopHelloworld);
+		//bf.test();
 		System.out.println(bf.run());
-    }
+	}
 
 	Brainfuck(){}
 
@@ -32,8 +42,6 @@ public class Brainfuck
 	{
 		String result = "";
 		init();
-		int loopStart=0;
-		int loopEnd=-1;
 		while(sourceCode.length() > codePointer)
 		{
 			char command = sourceCode.charAt(codePointer);
@@ -62,24 +70,15 @@ public class Brainfuck
 
 				break;
 			case '[':
-				loopStart = codePointer;
 				if(memory[ptr]==0)
 				{
-					if(loopEnd != -1)
-					{
-						codePointer = loopEnd;
-						loopEnd = -1;
-					}else
-					{
-						codePointer = sourceCode.indexOf("]", codePointer);
-					}
+					codePointer = searchCorrespondingParenthesis(codePointer);
 				}
 				break;
 			case ']':
-				loopEnd = codePointer;
 				if(memory[ptr] != 0)
 				{
-					codePointer = loopStart;
+					codePointer = searchCorrespondingParenthesis(codePointer);
 				}
 				break;
 			default:
@@ -105,6 +104,64 @@ public class Brainfuck
 		codePointer = 0;
 		ptr = 0;
 		for(int i=0;i<memoryNumber;i++)memory[i] = 0;
+	}
+
+	void test()
+	{
+		sourceCode = "[[[[]]]]";
+		System.out.println(searchCorrespondingParenthesis(7));
+	}
+
+	private int searchCorrespondingParenthesis(int index)
+	{
+		int parenthesisCounter = 0;
+		//System.out.println(sourceCode);
+		if(']' == sourceCode.charAt(index))
+		{
+			//System.out.println("]を見つけた");
+			//対応する[を探す
+			for(int i=index-1;i>-1;i--)
+			{
+				//System.out.println(i);
+				if(']' == sourceCode.charAt(i))
+				{
+					parenthesisCounter++;
+				}if('[' == sourceCode.charAt(i))
+				{
+					if(parenthesisCounter==0)
+					{
+						return i;
+					}else
+					{
+						parenthesisCounter--;
+					}
+				}
+			}
+		}else if('[' == sourceCode.charAt(index))
+		{
+			//System.out.println("[を見つけた");
+			//対応する]を探す
+			for(int i=index+1;i<sourceCode.length();i++)
+			{
+				if('[' == sourceCode.charAt(i))
+				{
+					parenthesisCounter++;
+				}if(']' == sourceCode.charAt(i))
+				{
+					if(parenthesisCounter==0)
+					{
+						return i;
+					}else
+					{
+						parenthesisCounter--;
+					}
+				}
+				//System.out.println(parenthesisCounter);
+			}
+
+		}
+		System.out.println("error");
+		return -1;
 	}
 
 
