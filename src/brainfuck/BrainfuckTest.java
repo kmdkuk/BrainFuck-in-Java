@@ -9,8 +9,12 @@ public class BrainfuckTest {
 	@Test
 	public void testrun() {
 		String helloworld = "+++++++++[>++++++++>+++++++++++>+++++<<<-]>.>++.+++++++..+++.>-.------------.<++++++++.--------.+++.------.--------.>+.";
+		String nestLoopHelloworld = ">++++++++[-<+++++++++>]<.>[][<-]>+>-[+]++>++>+++[>[->+++<<+++>]<<]>-----."
+				+ ">->+++..+++.>-.<<+[>[+>+]>>]<--------------.>>.+++.------.--------.>+.>+.";
 		Brainfuck bf = new Brainfuck();
 		assertEquals("helloworldじゃない","Hello, world!",bf.run(helloworld));
+
+		assertEquals("nestLoopに対応できてない","Hello World",bf.run(nestLoopHelloworld));
 	}
 
 }
